@@ -6,7 +6,7 @@ image:
   repository: webapp
   tag: 1
   pullPolicy: IfNotPresent
-  # for local development against minikube registry
+  # for local development against Minikube registry
   #pullPolicy: Never    
 service:
   name: hello-service
