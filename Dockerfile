@@ -12,10 +12,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-FROM node 
+#FROM node 
 # Using instead IBM corrected image due to vulnerabilities with standard image
 # see https://developer.ibm.com/answers/questions/361413/why-is-secure-container-toolchain-template-failing.html?smartspace=blockchain
-# FROM registry.ng.bluemix.net/ibmnode
+FROM registry.ng.bluemix.net/ibmnode
 MAINTAINER Philippe Mulet "philippe_mulet@fr.ibm.com"
 
 # Install the application
@@ -39,7 +39,7 @@ RUN grep -q '^password.*required' /etc/pam.d/common-password && sed -i 's/^passw
 # RUN dpkg --purge --force-all <package>
 
 # Address a current vulnerability in public node image by removing offending package
-RUN dpkg --purge --force-all libgcrypt20 
+#RUN dpkg --purge --force-all libgcrypt20 
 
 # Define command to run the application when the container starts
 CMD ["node", "/app/app.js"] 
