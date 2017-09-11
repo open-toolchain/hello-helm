@@ -12,10 +12,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-#FROM node 
+FROM node:8.4.0 
 # Using instead IBM corrected image due to vulnerabilities with standard image
 # see https://developer.ibm.com/answers/questions/361413/why-is-secure-container-toolchain-template-failing.html?smartspace=blockchain
-FROM registry.ng.bluemix.net/ibmnode
+# FROM registry.ng.bluemix.net/ibmnode
 MAINTAINER Philippe Mulet "philippe_mulet@fr.ibm.com"
 
 # Install the application
