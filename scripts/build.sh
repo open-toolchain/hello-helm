@@ -32,14 +32,14 @@ echo "IMAGE_NAME=${REGISTRY_URL}/${REGISTRY_NAMESPACE}/${IMAGE_NAME}:${BUILD_NUM
 # RELEASE_NAME from build.properties is used in Helm Chart deployment to set the release name
 echo "RELEASE_NAME=${IMAGE_NAME}" >> $ARCHIVE_DIR/build.properties
 
-if [ -f ./chart/hello/values.yaml ]; then
+if [ -f ./chart/${CHART_NAME}/values.yaml ]; then
     #Update Helm chart values.yml with image name and tag
     echo "UPDATING CHART VALUES:"
-    sed -i "s~^\([[:blank:]]*\)repository:.*$~\1repository: ${REGISTRY_URL}/${IMAGE_NAME}~" ./chart/hello/values.yaml
-    sed -i "s~^\([[:blank:]]*\)tag:.*$~\1tag: ${APPLICATION_VERSION}~" ./chart/hello/values.yaml
-    cat ./chart/hello/values.yaml
+    sed -i "s~^\([[:blank:]]*\)repository:.*$~\1repository: ${REGISTRY_URL}/${IMAGE_NAME}~" ./chart/${CHART_NAME}/values.yaml
+    sed -i "s~^\([[:blank:]]*\)tag:.*$~\1tag: ${APPLICATION_VERSION}~" ./chart/${CHART_NAME}/values.yaml
+    cat ./chart/${CHART_NAME}/values.yaml
     cp -r ./chart/ $ARCHIVE_DIR/
 else 
-    echo -e "${red}Helm chart values for Kubernetes deployment (/chart/hello/values.yaml) not found.${no_color}"
+    echo -e "${red}Helm chart values for Kubernetes deployment (/chart/${CHART_NAME}/values.yaml) not found.${no_color}"
     exit 1
 fi     
