@@ -23,10 +23,10 @@ fi
 echo -e "Checking registry current plan and quota"
 bx cr plan
 bx cr quota
-echo "If needed, discard older images using: bx cr image-rm"
+echo "If needed, discard older images using: bx cr image-rm. It may take a few minutes for quota to clear up."
 
 echo -e "Checking registry namespace: ${REGISTRY_NAMESPACE}"
-ns=$(bx cr namespaces | grep ${REGISTRY_NAMESPACE})
+ns= $( bx cr namespaces | grep ${REGISTRY_NAMESPACE} ||: )
 if [ -z $ns ]; then
     echo "Registry namespace ${REGISTRY_NAMESPACE} not found, creating it."
     bx cr namespace-add ${REGISTRY_NAMESPACE}
