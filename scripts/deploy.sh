@@ -5,6 +5,8 @@
 cat build.properties
 
 #Check cluster availability
+echo "=========================================================="
+echo ''Checking cluster"
 ip_addr=$(bx cs workers $PIPELINE_KUBERNETES_CLUSTER_NAME | grep normal | awk '{ print $2 }')
 if [ -z $ip_addr ]; then
   echo "$PIPELINE_KUBERNETES_CLUSTER_NAME not created or workers not ready"
@@ -12,11 +14,17 @@ if [ -z $ip_addr ]; then
 fi
 
 #Check cluster target namespace 
-if ! kubectl get namespace $CLUSTER_NAMESPACE; then
+if kubectl get namespace $CLUSTER_NAMESPACE; then
+  echo ''Namespace ${CLUSTER_NAMESPACE} found."
+else
   kubectl create namespace $CLUSTER_NAMESPACE
+  echo ''Namespace ${CLUSTER_NAMESPACE} created."
 fi
 
+
 # Grant access to private image registry from namespace $CLUSTER_NAMESPACE
+echo "=========================================================="
+echo ''Checking cluster namespace authorization to pull from the private image registry
 if ! kubectl get ${IMAGE_PULL_SECRET_NAME} --namespace $CLUSTER_NAMESPACE; then
   # copy the existing default secret into the new namespace
   kubectl get secret ${IMAGE_PULL_SECRET_NAME} -o yaml |  sed "s~^\([[:blank:]]*\)namespace:.*$~\1namespace: ${CLUSTER_NAMESPACE}~" | kubectl -n $CLUSTER_NAMESPACE create -f -
@@ -39,9 +47,8 @@ fi
 echo "default serviceAccount:"
 kubectl get serviceAccount default -o yaml
 
-
-# Check Helm/Tiller
-echo "CHECKING TILLER (Helm's server component)"
+echo "=========================================================="
+echo ''Checking TILLER enabled (Helm's server component)"
 helm init --upgrade
 while true; do
 tiller_deployed=$(kubectl --namespace=kube-system get pods | grep tiller | grep Running | grep 1/1 )
@@ -54,23 +61,28 @@ sleep 1
 done
 helm version
 
-echo "CHECKING CHART (lint) "
+echo "=========================================================="
+echo ''Checking Helm Chart"
 helm lint ${RELEASE_NAME} ./chart/${CHART_NAME}
 
-echo "DRY RUN DEPLOYING into: $PIPELINE_KUBERNETES_CLUSTER_NAME/$CLUSTER_NAMESPACE."
+echo "=========================================================="
+echo ''Deploying Helm Chart"
+
+echo "Dry run into: $PIPELINE_KUBERNETES_CLUSTER_NAME/$CLUSTER_NAMESPACE."
 helm upgrade ${RELEASE_NAME} ./chart/${CHART_NAME} --namespace $CLUSTER_NAMESPACE --install --debug --dry-run
 
-echo "DEPLOYING into: $PIPELINE_KUBERNETES_CLUSTER_NAME/$CLUSTER_NAMESPACE."
+echo "Deploying into: $PIPELINE_KUBERNETES_CLUSTER_NAME/$CLUSTER_NAMESPACE."
 helm upgrade ${RELEASE_NAME} ./chart/${CHART_NAME} --namespace $CLUSTER_NAMESPACE --install
 
 echo ""
-echo "DEPLOYED SERVICE:"
+echo "Deployed Services:"
 kubectl describe services ${RELEASE_NAME}-${CHART_NAME} --namespace $CLUSTER_NAMESPACE
 
 echo ""
-echo "DEPLOYED PODS:"
+echo "Deployed Pods:"
 kubectl describe pods --selector app=${CHART_NAME} --namespace $CLUSTER_NAMESPACE
 
-port=$(kubectl get services --namespace $CLUSTER_NAMESPACE | grep ${RELEASE_NAME}-${CHART_NAME} | sed 's/.*:\([0-9]*\).*/\1/g')
 echo ""
-echo "VIEW THE APPLICATION AT: http://$ip_addr:$port"
+echo "=========================================================="
+port=$(kubectl get services --namespace $CLUSTER_NAMESPACE | grep ${RELEASE_NAME}-${CHART_NAME} | sed 's/.*:\([0-9]*\).*/\1/g')
+echo "View the application at: http://$ip_addr:$port"

@@ -1,4 +1,6 @@
 #!/bin/bash
+#set -x
+
 echo -e "Build environment variables:"
 echo "REGISTRY_URL=${REGISTRY_URL}"
 echo "REGISTRY_NAMESPACE=${REGISTRY_NAMESPACE}"
@@ -12,7 +14,8 @@ echo "ARCHIVE_DIR=${ARCHIVE_DIR}"
 # To review or change build options use:
 # bx cr build --help
 
-echo -e "Checking for Dockerfile at the repository root"
+echo "=========================================================="
+echo "Checking for Dockerfile at the repository root"
 if [ -f Dockerfile ]; then 
    echo "Dockerfile found"
 else
@@ -20,12 +23,13 @@ else
     exit 1
 fi
 
-echo -e "Checking registry current plan and quota"
+echo "=========================================================="
+echo "Checking registry current plan and quota"
 bx cr plan
 bx cr quota
-echo "If needed, discard older images using: bx cr image-rm. It may take a few minutes for quota to clear up."
+echo "If needed, discard older images using: bx cr image-rm"
 
-echo -e "Checking registry namespace: ${REGISTRY_NAMESPACE}"
+echo "Checking registry namespace: ${REGISTRY_NAMESPACE}"
 ns=$( bx cr namespaces | grep ${REGISTRY_NAMESPACE} ||: )
 if [ -z $ns ]; then
     echo "Registry namespace ${REGISTRY_NAMESPACE} not found, creating it."
@@ -38,18 +42,29 @@ fi
 echo -e "Existing images in registry"
 bx cr images
 
+echo "=========================================================="
 echo -e "Building container image: ${IMAGE_NAME}:${BUILD_NUMBER}"
 set -x
 bx cr build -t $REGISTRY_URL/$REGISTRY_NAMESPACE/$IMAGE_NAME:$BUILD_NUMBER .
 set +x
+bx cr image-inspect $REGISTRY_URL/$REGISTRY_NAMESPACE/$IMAGE_NAME:$BUILD_NUMBER
 
-echo -e "Copying artifacts needed for deployment and testing"
+echo "=========================================================="
+echo "Copying artifacts needed for deployment and testing"
+
+echo -e "Checking archive dir presence"
+mkdir -p $ARCHIVE_DIR
 
 # IMAGE_NAME from build.properties is used by Vulnerability Advisor job to reference the image qualified location in registry
 echo "IMAGE_NAME=${REGISTRY_URL}/${REGISTRY_NAMESPACE}/${IMAGE_NAME}:${BUILD_NUMBER}" >> $ARCHIVE_DIR/build.properties
 
 # RELEASE_NAME from build.properties is used in Helm Chart deployment to set the release name
 echo "RELEASE_NAME=${IMAGE_NAME}" >> $ARCHIVE_DIR/build.properties
+
+# Copy scripts (incl. deploy scripts)
+if [ ! -d $ARCHIVE_DIR/scripts/ ]; then # no need to copy if working in ./ already
+  cp -r ./scripts/ $ARCHIVE_DIR/
+fi
 
 if [ -f ./chart/${CHART_NAME}/values.yaml ]; then
     #Update Helm chart values.yml with image name and tag
