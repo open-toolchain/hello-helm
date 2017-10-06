@@ -15,10 +15,10 @@ fi
 
 #Check cluster target namespace 
 if kubectl get namespace $CLUSTER_NAMESPACE; then
-  echo ''Namespace ${CLUSTER_NAMESPACE} found."
+  echo "Namespace ${CLUSTER_NAMESPACE} found."
 else
   kubectl create namespace $CLUSTER_NAMESPACE
-  echo ''Namespace ${CLUSTER_NAMESPACE} created."
+  echo "Namespace ${CLUSTER_NAMESPACE} created."
 fi
 
 
