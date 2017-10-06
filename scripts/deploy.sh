@@ -17,24 +17,25 @@ if ! kubectl get namespace $CLUSTER_NAMESPACE; then
 fi
 
 # Grant access to private image registry from namespace $CLUSTER_NAMESPACE
-if ! kubectl get secret bluemix-devops-secret --namespace $CLUSTER_NAMESPACE; then
+if ! kubectl get ${IMAGE_PULL_SECRET_NAME} --namespace $CLUSTER_NAMESPACE; then
   # copy the existing default secret into the new namespace
-  kubectl get secret bluemix-default-secret -o yaml |  sed "s~^\([[:blank:]]*\)namespace:.*$~\1namespace: ${CLUSTER_NAMESPACE}~" | kubectl -n $CLUSTER_NAMESPACE create -f -
+  kubectl get secret ${IMAGE_PULL_SECRET_NAME} -o yaml |  sed "s~^\([[:blank:]]*\)namespace:.*$~\1namespace: ${CLUSTER_NAMESPACE}~" | kubectl -n $CLUSTER_NAMESPACE create -f -
   # enable default serviceaccount to use the pull secret
-  kubectl patch -n $CLUSTER_NAMESPACE serviceaccount/default -p '{"imagePullSecrets":[{"name":"bluemix-default-secret"}]}'
-  echo "Namespace $CLUSTER_NAMESPACE is now authorized to pull from the private image registry"
-fi
-
-# Grant access to private image registry from namespace $CLUSTER_NAMESPACE
-echo "create ${IMAGE_PULL_SECRET_NAME} imagePullSecret if it does not exist"
-if ! kubectl get secret ${IMAGE_PULL_SECRET_NAME} --namespace $CLUSTER_NAMESPACE; then
-  echo "${IMAGE_PULL_SECRET_NAME} not found in $CLUSTER_NAMESPACE, creating it"
-  # for Container Registry, docker username is 'token' and email does not matter
-  kubectl --namespace $CLUSTER_NAMESPACE create secret docker-registry $IMAGE_PULL_SECRET_NAME --docker-server=$REGISTRY_HOST --docker-password=$IMAGE_REGISTRY_TOKEN --docker-username=token --docker-email=a@b.com
-  echo "enable default serviceaccount to use the pull secret"
   kubectl patch -n $CLUSTER_NAMESPACE serviceaccount/default -p '{"imagePullSecrets":[{"name":"'"$IMAGE_PULL_SECRET_NAME"'"}]}'
   echo "Namespace $CLUSTER_NAMESPACE is now authorized to pull from the private image registry"
 fi
+
+#TODO mint registry secret in host registry, and use it in remove cluster, pull secret should be region specific (ibmcloud-devops-pull-registry-yp:ibm:us-south)
+# Grant access to private image registry from namespace $CLUSTER_NAMESPACE
+#echo "create ${IMAGE_PULL_SECRET_NAME} imagePullSecret if it does not exist"
+#if ! kubectl get secret ${IMAGE_PULL_SECRET_NAME} --namespace $CLUSTER_NAMESPACE; then
+#  echo "${IMAGE_PULL_SECRET_NAME} not found in $CLUSTER_NAMESPACE, creating it"
+#  # for Container Registry, docker username is 'token' and email does not matter
+#  kubectl --namespace $CLUSTER_NAMESPACE create secret docker-registry $IMAGE_PULL_SECRET_NAME --docker-server=$REGISTRY_HOST --docker-password=$IMAGE_REGISTRY_TOKEN --docker-username=token --docker-email=a@b.com
+#  echo "enable default serviceaccount to use the pull secret"
+#  kubectl patch -n $CLUSTER_NAMESPACE serviceaccount/default -p '{"imagePullSecrets":[{"name":"'"$IMAGE_PULL_SECRET_NAME"'"}]}'
+#  echo "Namespace $CLUSTER_NAMESPACE is now authorized to pull from the private image registry"
+#fi
 echo "default serviceAccount:"
 kubectl get serviceAccount default -o yaml
 
