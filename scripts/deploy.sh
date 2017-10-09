@@ -7,20 +7,19 @@ cat build.properties
 #Check cluster availability
 echo "=========================================================="
 echo "Checking cluster"
-ip_addr=$(bx cs workers ${PIPELINE_KUBERNETES_CLUSTER_NAME} | grep normal | awk '{ print $2 }')
-if [ -z $ip_addr ]; then
+IP_ADDR=$(bx cs workers ${PIPELINE_KUBERNETES_CLUSTER_NAME} | grep normal | awk '{ print $2 }')
+if [ -z $IP_ADDR ]; then
   echo -e "${PIPELINE_KUBERNETES_CLUSTER_NAME} not created or workers not ready"
   exit 1
 fi
 
 #Check cluster target namespace 
-if [ kubectl get namespace ${CLUSTER_NAMESPACE} ]; then
+if kubectl get namespace ${CLUSTER_NAMESPACE}; then
   echo -e "Namespace ${CLUSTER_NAMESPACE} found."
 else
   kubectl create namespace ${CLUSTER_NAMESPACE}
   echo -e "Namespace ${CLUSTER_NAMESPACE} created."
 fi
-
 
 echo "=========================================================="
 echo -e "Checking access to private image registry from namespace ${CLUSTER_NAMESPACE}"
@@ -50,13 +49,13 @@ echo "=========================================================="
 echo "Checking TILLER enabled (Helm's server component)"
 helm init --upgrade
 while true; do
-tiller_deployed=$(kubectl --namespace=kube-system get pods | grep tiller | grep Running | grep 1/1 )
-if [[ "${tiller_deployed}" != "" ]]; then
-  echo "Tiller ready."
-  break; 
-fi
-echo "Waiting for Tiller to be ready."
-sleep 1
+  TILLER_DEPLOYED=$(kubectl --namespace=kube-system get pods | grep tiller | grep Running | grep 1/1 )
+  if [[ "${TILLER_DEPLOYED}" != "" ]]; then
+    echo "Tiller ready."
+    break; 
+  fi
+  echo "Waiting for Tiller to be ready."
+  sleep 1
 done
 helm version
 
@@ -83,5 +82,5 @@ kubectl describe pods --selector app=${CHART_NAME} --namespace ${CLUSTER_NAMESPA
 
 echo ""
 echo "=========================================================="
-port=$(kubectl get services --namespace ${CLUSTER_NAMESPACE} | grep ${RELEASE_NAME}-${CHART_NAME} | sed 's/.*:\([0-9]*\).*/\1/g')
-echo -e "View the application at: http://${ip_addr}:${port}"
+PORT=$(kubectl get services --namespace ${CLUSTER_NAMESPACE} | grep ${RELEASE_NAME}-${CHART_NAME} | sed 's/.*:\([0-9]*\).*/\1/g')
+echo -e "View the application at: http://${IP_ADDR}:${PORT}"
