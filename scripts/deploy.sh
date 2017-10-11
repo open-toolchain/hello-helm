@@ -25,7 +25,7 @@ echo "=========================================================="
 echo -e "Checking access to private image registry from namespace ${CLUSTER_NAMESPACE}"
 if ! kubectl get secret bluemix-default-secret --namespace ${CLUSTER_NAMESPACE}; then
   # copy the existing default secret into the new namespace
-  kubectl get secret bluemix-default-secret -namespace default -o yaml |  sed "s~^\([[:blank:]]*\)namespace:.*$~\1namespace: ${CLUSTER_NAMESPACE}~" | kubectl -n ${CLUSTER_NAMESPACE} create -f -
+  kubectl get secret bluemix-default-secret --namespace default -o yaml |  sed "s~^\([[:blank:]]*\)namespace:.*$~\1namespace: ${CLUSTER_NAMESPACE}~" | kubectl -n ${CLUSTER_NAMESPACE} create -f -
   # enable default serviceaccount to use the pull secret
   kubectl patch -n ${CLUSTER_NAMESPACE} serviceaccount/default -p '{"imagePullSecrets":[{"name":"'"bluemix-default-secret"'"}]}'
   echo -e "Namespace ${CLUSTER_NAMESPACE} is now authorized to pull from the private image registry"
