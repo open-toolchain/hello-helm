@@ -12,7 +12,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-FROM node:8.4.0 
+FROM node:8.8.1
 # Using instead IBM corrected image due to vulnerabilities with standard image
 # see https://developer.ibm.com/answers/questions/361413/why-is-secure-container-toolchain-template-failing.html?smartspace=blockchain
 # FROM registry.ng.bluemix.net/ibmnode
@@ -37,9 +37,8 @@ RUN grep -q '^password.*required' /etc/pam.d/common-password && sed -i 's/^passw
 
 # Vulnerability Advisor : Temporarily remove a specific <package> that was discovered vulnerable
 # RUN dpkg --purge --force-all <package>
-RUN dpkg --purge --force-all git
 RUN dpkg --purge --force-all curl
-RUN dpkg --purge --force-all perl
+RUN dpkg --purge --force-all wget
 
 
 # Define command to run the application when the container starts
