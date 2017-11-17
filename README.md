@@ -1,4 +1,6 @@
-##Sample node.js hello world application packaged as a container with a Helm Chart
+## Sample node.js hello world application packaged as a container with a Helm Chart
+
+Try to deploy it to Kubernetes with this IBM Cloud DevOps toolchain: https://github.com/open-toolchain/simple-helm-toolchain fully preconfigured for you.
 
 
 Note: The Helm chart was created using a 'helm create hello' command, then altered to pass an image pull secret (to enable later deployments from private image registries), i.e.  
@@ -14,4 +16,3 @@ imagePullSecrets:
 pullSecret: regsecret
 ```
 
-Try to deploy it to Kubernetes with this IBM Cloud DevOps toolchain: https://github.com/open-toolchain/simple-helm-toolchain fully preconfigured for you.
