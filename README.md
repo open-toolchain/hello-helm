@@ -1,4 +1,4 @@
-## Sample node.js hello world application packaged as a container with a Helm Chart
+### Sample node.js hello world application packaged as a container with a Helm Chart
 
 Try to deploy it to Kubernetes with this IBM Cloud DevOps toolchain: https://github.com/open-toolchain/simple-helm-toolchain fully preconfigured for you.
 
