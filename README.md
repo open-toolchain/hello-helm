@@ -11,6 +11,9 @@ imagePullSecrets:
 ```
 
 - and corresponding addition in [/chart/hello/values/yaml](https://github.com/open-toolchain/hello-helm/blob/56ccf087e2d8fc18f7774f84f9400f02060736f2/chart/hello/values.yaml#L8)
-`pullSecret: regsecret`
+
+```
+pullSecret: regsecret
+```
 
 Try it with this IBM Cloud DevOps toolchain: https://github.com/open-toolchain/simple-helm-toolchain
