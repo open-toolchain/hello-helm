@@ -5,8 +5,9 @@ Note: The Helm chart was created using a 'helm create hello' command, then alter
 
 - in [/chart/hello/templates/deployment.yaml](https://github.com/open-toolchain/hello-helm/blob/56ccf087e2d8fc18f7774f84f9400f02060736f2/chart/hello/templates/deployment.yaml#L18-L19):
 
-```imagePullSecrets:
-    - name: {{ .Values.image.pullSecret }}
+```
+imagePullSecrets:
+- name: {{ .Values.image.pullSecret }}
 ```
 
 - and corresponding addition in [/chart/hello/values/yaml](https://github.com/open-toolchain/hello-helm/blob/56ccf087e2d8fc18f7774f84f9400f02060736f2/chart/hello/values.yaml#L8)
