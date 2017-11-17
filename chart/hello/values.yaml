@@ -5,6 +5,7 @@ replicaCount: 2
 image:
   repository: webapp
   tag: 1
+  pullSecret: regsecret
   pullPolicy: IfNotPresent
   # for local development against Minikube registry
   #pullPolicy: Never    
