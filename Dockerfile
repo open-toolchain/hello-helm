@@ -12,7 +12,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-FROM node:alpine
+FROM node:6.12.0-alpine
 # Using instead IBM corrected image due to vulnerabilities with standard image
 # see https://developer.ibm.com/answers/questions/361413/why-is-secure-container-toolchain-template-failing.html?smartspace=blockchain
 # FROM registry.ng.bluemix.net/ibmnode
