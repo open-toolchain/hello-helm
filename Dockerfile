@@ -1,4 +1,4 @@
-#  Copyright 2016 IBM
+#  Copyright 2019 IBM
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -12,10 +12,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-FROM node:6.17-alpine
-# Using instead IBM corrected image due to vulnerabilities with standard image
-# see https://developer.ibm.com/answers/questions/361413/why-is-secure-container-toolchain-template-failing.html?smartspace=blockchain
-# FROM registry.ng.bluemix.net/ibmnode
+FROM node:alpine
 MAINTAINER Philippe Mulet "philippe_mulet@fr.ibm.com"
 
 RUN apk update && apk upgrade
