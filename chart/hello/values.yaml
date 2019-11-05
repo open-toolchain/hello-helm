@@ -13,7 +13,7 @@ service:
   name: hello-service
   type: NodePort
   externalPort: 80
-  internalPort: 80
+  internalPort: 8080
 ingress:
   enabled: false
   # Used to create an Ingress record.
