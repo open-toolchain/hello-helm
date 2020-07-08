@@ -29,7 +29,7 @@ RUN npm install
 RUN chmod -R u+x /app && \
     chgrp -R 0 /app && \
     chmod -R g=u /app /etc/passwd
-    
+
 ENV PORT 8080
 EXPOSE 8080
 
