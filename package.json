@@ -8,8 +8,7 @@
     "test-fvt": "mocha test/fvt-test.js --reporter json --reporter-options output=test/fvt-test.json | tee test/fvt-test.json",
     "start-server": "node --max-http-header-size=65535 app.js testApp",
     "stop-server": "killall -SIGINT testApp",
-    "test-unit": "mocha test/unit-test.js --reporter json --reporter-options output=test/unit-test.json | tee test/unit-test.json",
-    "ci": "start-server http://localhost:80 test"
+    "test-unit": "mocha test/unit-test.js --reporter json --reporter-options output=test/unit-test.json | tee test/unit-test.json"
   },
   "dependencies": {
     "express": ">=3.11.0",
