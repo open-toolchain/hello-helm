@@ -15,7 +15,7 @@
 **/
 
 var express = require('express');
-
+const message = require('./utils');
 var PORT;
 if (process.env.PORT) {
   PORT = process.env.PORT;
@@ -25,8 +25,8 @@ if (process.env.PORT) {
 
 var app = express();
 app.get('/', function (req, res) {
-  res.send('Welcome to IBM Cloud DevOps with Docker, Kubernetes and Helm Charts. Lets go use the Continuous Delivery Service');
+  res.send(message.getWelcomeMessage());
 });
 
 app.listen(PORT);
-console.log(' Application Running on port' + PORT);
+console.log(message.getPortMessage() + PORT);
