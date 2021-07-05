@@ -14,3 +14,12 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- $name := default .Chart.Name .Values.nameOverride -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Create a ClusterIP service name based on the fullname with "-cip" suffix.
+We truncate at 59 (63 chars - ("-cip".length)) because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "fullnamecip" -}}
+{{- $chartName := default .Chart.Name .Values.nameOverride -}}
+{{- printf "%s-%s" .Release.Name $chartName | trunc 59 | trimSuffix "-" | printf "%s-cip" -}}
+{{- end -}}
