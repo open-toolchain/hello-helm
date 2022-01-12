@@ -1,14 +1,6 @@
 [
-      {
-        "cve": "SNYK-JS-JSONSCHEMA-1920922",
-        "alwaysOmit": true
-      },
-      {
-        "cve": "SNYK-JS-ANSIREGEX-1583908",
-        "alwaysOmit": true
-      },
-      {
-        "cve": "SNYK-ALPINE314-MUSL-1307176",
-        "alwaysOmit": true
-      }
+  {
+    "cve": "SNYK-ALPINE315-MUSL-1928332",
+    "alwaysOmit": true
+  }
 ]
