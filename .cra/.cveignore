@@ -1,6 +1,6 @@
 [
   {
-    "cve": "SNYK-ALPINE315-MUSL-1928332",
-    "alwaysOmit": true
+      "cve": "SNYK-JS-MOCHA-2863123",
+      "alwaysOmit": true
   }
 ]
