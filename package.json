@@ -4,18 +4,36 @@
   "version": "0.0.1",
   "description": "Basic hello world application for Node.js",
   "author": "Robbie Minshall <rjminsha@us.ibm.com>",
+  "jest": {
+    "verbose": true,
+    "reporters": [
+      "default",
+      "jest-junit"
+    ]
+  },
+  "jest-junit": {
+    "suiteName": "jest tests",
+    "outputDirectory": "./test",
+    "outputName": "jest-junit.xml",
+    "uniqueOutputName": "false",
+    "classNameTemplate": "{classname}-{title}",
+    "titleTemplate": "{classname}-{title}",
+    "ancestorSeparator": " › ",
+    "usePathForSuiteName": "false"
+  },
   "scripts": {
-    "test-fvt": "mocha test/fvt-test.js --reporter json --reporter-options output=test/fvt-test.json | tee test/fvt-test.json",
     "start-server": "node --max-http-header-size=65535 app.js testApp",
     "stop-server": "killall -SIGINT testApp",
-    "test-unit": "mocha test/unit-test.js --reporter json --reporter-options output=test/unit-test.json | tee test/unit-test.json"
+    "test-unit": "jest ./test/unit.test.js",
+    "test-fvt": "jest ./test/fvt.test.js"
   },
   "dependencies": {
-    "express": "4.18.2",
+    "express": "^4.18.2",
     "nconf": "*"
   },
   "devDependencies": {
-    "chai": "^4.3.7",
-    "mocha": "^10.1.0"
+    "jest": "^29.7.0",
+    "jest-junit": "^15.0.0",
+    "axios": "^1.6.4"
   }
 }
