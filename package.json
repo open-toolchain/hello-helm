@@ -34,9 +34,9 @@
   "devDependencies": {
     "jest": "^29.7.0",
     "jest-junit": "^15.0.0",
-    "axios": "^1.6.8"
+    "axios": "^1.7.4"
   },
-  "overrides" : {
-    "micromatch" : "4.0.7"
+  "overrides": {
+    "micromatch": "4.0.7"
   }
 }
