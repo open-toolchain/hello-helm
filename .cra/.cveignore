@@ -1,2 +1,6 @@
 [
+    {
+        "cve": "CVE-2024-4067",
+        "alwaysOmit": true
+    }
 ]
