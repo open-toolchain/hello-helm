@@ -28,16 +28,15 @@
     "test-fvt": "jest ./test/fvt.test.js"
   },
   "dependencies": {
-    "express": "^4.20.0",
+    "express": "^4.21.0",
     "nconf": "*"
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "jest-junit": "^15.0.0",
-    "axios": "^1.7.4"
+    "jest-junit": "^16.0.0",
+    "axios": "^1.7.7"
   },
   "overrides": {
-    "micromatch": "4.0.8",
-    "send": "0.19.0"
+    "cookie": "0.7.2"
   }
 }
