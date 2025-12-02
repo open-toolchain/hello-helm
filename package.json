@@ -28,7 +28,7 @@
     "test-fvt": "jest ./test/fvt.test.js"
   },
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.22.0"
   },
   "devDependencies": {
     "axios": "^1.12.0",
