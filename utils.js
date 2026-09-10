@@ -2,7 +2,7 @@
 
   
 const welcomeMessage = "Welcome to IBM Cloud DevOps with Docker, Kubernetes and Helm Charts. Lets go use the Continuous Delivery Service";
-const portMessage = "Application Running on port";
+const portMessage = "Application Running on port ";
 
 const getWelcomeMessage = () => {
     return welcomeMessage;

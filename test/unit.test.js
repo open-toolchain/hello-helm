@@ -5,6 +5,6 @@ describe('Message Test', () => {
         assert.strictEqual(message.getWelcomeMessage(), "Welcome to IBM Cloud DevOps with Docker, Kubernetes and Helm Charts. Lets go use the Continuous Delivery Service");
     });
  it('Port Test', () => {
-        assert.strictEqual(message.getPortMessage(), "Application Running on port");
+        assert.strictEqual(message.getPortMessage(), "Application Running on port ");
     });
 });

@@ -1,7 +1,13 @@
 const message = require('../utils');
 const axios = require("axios");
 
-const testurl = "http://localhost:80"
+var PORT;
+if (process.env.PORT) {
+  PORT = process.env.PORT;
+} else {
+  PORT = 80;
+}
+const testurl = `http://localhost:${PORT}`
 describe('Test', () => {
     it('Check application URL', async () => {
         const result = await axios.get(`${testurl}`, {});
